@@ -1,11 +1,19 @@
-## My Project
+# Amazon OpenSearch Serverless Common Usage Patterns
 
-TODO: Fill this README out!
+This repository contains a set of example projects for [Amazon OpenSearch Serverless](https://aws.amazon.com/opensearch-service/features/serverless/)
 
-Be sure to:
+| Usage Pattern | Architecture | Description |
+|---------|-------------|------|
+| [Opensearch Serverless for Search usecases](./search) | ![opensearch-serverless-search-type](./search/opensearch-serverless-search-type.svg) | opensearch serverless for search usecases |
+| [Opensearch Serverless for Time-series data](./time-series) | ![opensearch-serverless-timeseries-arch](./time-series/opensearch-serverless-timeseries-arch.svg) | opensearch serverless for time series analysis |
+| [Opensearch Serverless in VPC](./vpc-endpoint) | ![opensearch-serverless-vpc-endpoint-arch](./vpc-endpoint/opensearch-serverless-vpc-endpoint-arch.svg) | opensearch serverless in VPC |
+| [Opensearch Serverless Streaming ingestion from Kinesis Data Firehose](./kinesis-firehose) | ![opensearch-serverless-firehose-arch](./kinesis-firehose/opensearch-serverless-firehose-arch.svg) | data ingestion to opensearch serverless using kinesis firehose |
 
-* Change the title in this README
-* Edit your repository description on GitHub
+Enjoy!
+
+## References
+ * [Amazon OpenSearch Serverless](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless.html)
+ * [Getting started with Amazon OpenSearch Serverless](https://catalog.us-east-1.prod.workshops.aws/workshops/f8d2c175-634d-4c5d-94cb-d83bbc656c6a/en-US)
 
 ## Security
 
