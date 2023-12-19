@@ -49,7 +49,7 @@ class KinesisFirehoseStack(Stack):
         "cloudWatchLoggingOptions": {
           "enabled": True,
           "logGroupName": firehose_log_group_name,
-          "logStreamName": "{OPENSEARCH_INDEX_NAME}-s3backup"
+          "logStreamName": f"{OPENSEARCH_INDEX_NAME}-s3backup"
         },
         "compressionFormat": "UNCOMPRESSED", # [GZIP | HADOOP_SNAPPY | Snappy | UNCOMPRESSED | ZIP]
         # Kinesis Data Firehose automatically appends the “YYYY/MM/dd/HH/” UTC prefix to delivered S3 files. You can also specify
@@ -64,7 +64,7 @@ class KinesisFirehoseStack(Stack):
       cloud_watch_logging_options={
         "enabled": True,
         "logGroupName": firehose_log_group_name,
-        "logStreamName": "firehose-to-{OPENSEARCH_INDEX_NAME}"
+        "logStreamName": f"firehose-to-{OPENSEARCH_INDEX_NAME}"
       },
       collection_endpoint=opensearch_endpoint,
       retry_options={

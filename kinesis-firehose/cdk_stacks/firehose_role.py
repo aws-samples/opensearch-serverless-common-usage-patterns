@@ -52,6 +52,18 @@ class KinesisFirehoseRoleStack(Stack):
       actions=["logs:PutLogEvents"]
     ))
 
+    firehose_role_policy_doc.add_statements(aws_iam.PolicyStatement(**{
+      "effect": aws_iam.Effect.ALLOW,
+      # arn:{partition}:{service}:{region}:{account}:{resource}{sep}{resource-name}
+      "resources": [self.format_arn(service="aoss",
+                      region=cdk.Aws.REGION, account=cdk.Aws.ACCOUNT_ID,
+                      resource="collection", arn_format=cdk.ArnFormat.SLASH_RESOURCE_NAME,
+                      resource_name="*")],
+      "actions": [
+        "aoss:APIAccessAll"
+      ]
+    }))
+
     firehose_role = aws_iam.Role(self, "KinesisFirehoseServiceRole",
       role_name=f"KinesisFirehoseServiceRole-{self.stack_name}",
       assumed_by=aws_iam.ServicePrincipal("firehose.amazonaws.com"),
