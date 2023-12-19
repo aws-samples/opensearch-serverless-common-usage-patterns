@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+# vim: tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 import aws_cdk as cdk
 
@@ -76,5 +78,9 @@ class KinesisFirehoseRoleStack(Stack):
     self.firehose_role_arn = firehose_role.role_arn
     self.firehose_role_name = firehose_role.role_name
 
-    cdk.CfnOutput(self, f'{self.stack_name}-FirehoseRoleArn', value=self.firehose_role_arn)
-    cdk.CfnOutput(self, f'{self.stack_name}-FirehoseRoleName', value=self.firehose_role_name)
+    cdk.CfnOutput(self, 'FirehoseRoleArn',
+      value=self.firehose_role_arn,
+      export_name=f'{self.stack_name}-FirehoseRoleArn')
+    cdk.CfnOutput(self, 'FirehoseRoleName',
+      value=self.firehose_role_name,
+      export_name=f'{self.stack_name}-FirehoseRoleName')
