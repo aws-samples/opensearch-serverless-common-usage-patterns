@@ -58,15 +58,13 @@ At this point you can now synthesize the CloudFormation template for this code.
 <pre>
 (.venv) $ export CDK_DEFAULT_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
 (.venv) $ export CDK_DEFAULT_REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
-(.venv) $ cdk synth --all \
-              -c collection_name='<i>collection-name</i>'
+(.venv) $ cdk synth --all
 </pre>
 
 Use `cdk deploy` command to create the stack shown above.
 
 <pre>
-(.venv) $ cdk deploy --all \
-              -c collection_name='<i>collection-name</i>'
+(.venv) $ cdk deploy --all
 </pre>
 
 To add additional dependencies, for example other CDK libraries, just add
@@ -78,8 +76,7 @@ command.
 Delete the CloudFormation stack by running the below command.
 
 <pre>
-(.venv) $ cdk destroy --force --all \
-              -c collection_name='<i>collection-name</i>'
+(.venv) $ cdk destroy --force --all
 </pre>
 
 ## Useful commands
@@ -161,3 +158,13 @@ The followings are examples using **Dev Tools** with the OpenSearch Dashboards c
    * check out ***Korean (Nori) Analysis***
  * [Identity and Access Management for Amazon OpenSearch Serverless](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/security-iam-serverless.html)
  * [Configure SAML federation for Amazon OpenSearch Serverless with AWS IAM Identity Center (2023-04-18)](https://aws.amazon.com/blogs/big-data/configure-saml-federation-for-amazon-opensearch-serverless-with-aws-iam-identity-center/)
+ * [OpenSearch Popular APIs](https://opensearch.org/docs/latest/opensearch/popular-api/)
+
+## Troubleshooting
+ * [Getting a 401 when trying to access OpenSearch serverless dashboard](https://repost.aws/questions/QUrOZGnwlHRMSLQoSePGuShg/getting-a-401-when-trying-to-access-opensearch-serverless-dashboard)
+   <pre>
+   If you are on public access, and your IAM has the right permission but you still cannot access dashboard, check if you have enabled "Access to Opensearch Dashboards", which is disabled by default. Here is how:
+
+    1. Go to <b>OpenSearch</b> -> <b>Collections</b>, click into your serverless collection.
+    2. Scroll down to Network part, click <b>Manage network access</b> -> click into network policy name, choose edit, scroll to the very bottom and click <b>"Enable access to OpenSearch Dashboards"</b>, put your filters in.
+   </pre>
