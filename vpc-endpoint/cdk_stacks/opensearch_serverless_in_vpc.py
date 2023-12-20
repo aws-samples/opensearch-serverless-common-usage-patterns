@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+# vim: tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+
 import json
 
 import aws_cdk as cdk
 
 from aws_cdk import (
   Stack,
-  aws_ec2,
   aws_opensearchserverless as aws_opss
 )
 from constructs import Construct
@@ -40,9 +42,13 @@ class OpsServerlessInVPCStack(Stack):
       ]
     }], indent=2)
 
+    #XXX: max length of policy name is 32
+    network_security_policy_name = f"{collection_name}-security-policy"
+    assert len(network_security_policy_name) <= 32, f"Network Security Policy: {network_security_policy_name}"
+
     cfn_network_security_policy = aws_opss.CfnSecurityPolicy(self, "NetworkSecurityPolicy",
       policy=network_security_policy,
-      name=f"{collection_name}-security-policy",
+      name=network_security_policy_name,
       type="network"
     )
 
@@ -59,16 +65,20 @@ class OpsServerlessInVPCStack(Stack):
       "AWSOwnedKey": True
     }, indent=2)
 
+    #XXX: max length of policy name is 32
+    encryption_security_policy_name = f"{collection_name}-security-policy"
+    assert len(encryption_security_policy_name) <= 32, f"Encryption Security Policy: {encryption_security_policy_name}"
+
     cfn_encryption_security_policy = aws_opss.CfnSecurityPolicy(self, "EncryptionSecurityPolicy",
       policy=encryption_security_policy,
-      name=f"{collection_name}-security-policy",
+      name=encryption_security_policy_name,
       type="encryption"
     )
 
     cfn_collection = aws_opss.CfnCollection(self, "OpssSearchCollection",
       name=collection_name,
       description="Collection to be used for search using OpenSearch Serverless",
-      type="SEARCH" # [SEARCH, TIMESERIES]
+      type="SEARCH" # [SEARCH, TIMESERIES, VECTORSEARCH]
     )
     cfn_collection.add_dependency(cfn_network_security_policy)
     cfn_collection.add_dependency(cfn_encryption_security_policy)
@@ -111,8 +121,8 @@ class OpsServerlessInVPCStack(Stack):
     ], indent=2)
 
     #XXX: max length of policy name is 32
-    data_access_policy_name = f"{collection_name}-access-policy"
-    assert len(data_access_policy_name) <= 32
+    data_access_policy_name = f"{collection_name}-policy"
+    assert len(data_access_policy_name) <= 32, f"Data Access Policy Name: {data_access_policy_name}"
 
     cfn_access_policy = aws_opss.CfnAccessPolicy(self, "OpssDataAccessPolicy",
       name=data_access_policy_name,
@@ -121,6 +131,10 @@ class OpsServerlessInVPCStack(Stack):
       type="data"
     )
 
-    cdk.CfnOutput(self, f'{self.stack_name}-Endpoint', value=cfn_collection.attr_collection_endpoint)
-    cdk.CfnOutput(self, f'{self.stack_name}-DashboardsURL', value=cfn_collection.attr_dashboard_endpoint)
 
+    cdk.CfnOutput(self, 'OpenSearchEndpoint',
+      value=cfn_collection.attr_collection_endpoint,
+      export_name=f'{self.stack_name}-OpenSearchEndpoint')
+    cdk.CfnOutput(self, 'DashboardsURL',
+      value=cfn_collection.attr_dashboard_endpoint,
+      export_name=f'{self.stack_name}-DashboardsURL')
